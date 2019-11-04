@@ -1,0 +1,43 @@
+{
+    "name": "langyi/performance",
+    "description": "profile data!",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "yumancang",
+            "email": "mancangluo@tencent.com"
+        }
+    ],
+	"require" : {
+		"php" : "^7.0",
+		"illuminate/support" : "^6.0",
+		"illuminate/database" : "^6.0"
+	},
+	"require-dev" : {
+		"phpunit/phpunit" : "^8.0"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Langyi\\Performance\\" : "src/"
+		}
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"Langyi\\Performance\\Tests\\" : "tests/"
+		}
+	},
+	"extra" : {
+		"laravel" : {
+			"providers" : [
+				"Langyi\\Performance\\PerformanceServiceProvider"
+			],
+			"aliases" : {
+				"Performance" : "Langyi\\Performance\\Facades\\PerformanceServiceFacade"
+			}
+		}
+	},
+	"minimum-stability" : "dev",
+	"prefer-stable" : true
+
+}
