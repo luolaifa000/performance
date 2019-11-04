@@ -1,7 +1,7 @@
 <?php 
 namespace Langyi\Performance\Helpers\Concerns;
 
-use Clockwork\Helpers\StackFrame;
+use Langyi\Performance\Helpers\StackFrame;
 
 trait ResolvesViewName
 {

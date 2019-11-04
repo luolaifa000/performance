@@ -6,6 +6,7 @@ use Langyi\Performance\Cores\Performance;
 use Illuminate\Support\ServiceProvider;
 use Langyi\Performance\DataSource\EloquentDataSource;
 use Langyi\Performance\Drivers\DriverManager;
+use Langyi\Performance\Cores\PerformanceCore;
 
 
 
@@ -19,19 +20,21 @@ class PerformanceServiceProvider extends ServiceProvider
             ], 'config');
         }
         
-        if ($this->app->make(Performance::class)->getEnable()) {
+        if ($this->app->make('performance')->getEnable()) {
             
             $this->app['performance.eloquent']->listenToEvents();
         }
+        
     }
     
 
     public function register()
     {
-        $this->app->singleton(Performance::class, function ($app) {
-            return new Performance($app);
+        
+        $this->app->singleton('performance', function ($app) {
+            return new PerformanceCore($app);
         });
-        $this->app->singleton('performance_manager', function ($app) {
+        $this->app->singleton('performance.manager', function ($app) {
             return new DriverManager($app);
         });
 
@@ -51,11 +54,11 @@ class PerformanceServiceProvider extends ServiceProvider
     
     private function getMigrateFile()
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Migrations';
+        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'src/Migrations';
     }
 
     private function getConfigFile(): string
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . 'performance.php';
+        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'performance.php';
     }
 }
