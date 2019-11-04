@@ -29,7 +29,7 @@
 	"extra" : {
 		"laravel" : {
 			"providers" : [
-				"Langyi\\Performance\\Performance"
+				"Langyi\\Performance\\PerformanceServiceProvider"
 			],
 			"aliases" : {
 				"Performance" : "Langyi\\Performance\\Facades\\PerformanceServiceFacade"
