@@ -2,6 +2,8 @@
 namespace Langyi\Performance\Drivers;
 
 use Langyi\Performance\Models\Performance as PModel;
+use Illuminate\Support\Facades\Event;
+use Langyi\Performance\Events\PerformanceSavedEvent;
 
 class SqlStorage extends AbstractDriver
 {
@@ -26,6 +28,8 @@ class SqlStorage extends AbstractDriver
         $model->pmu = $main['pmu'];
         $model->sql = $this->getDatabaseQueries();
         $model->save();
+        //新增事件
+        Event::dispatch(new PerformanceSavedEvent($main, $this->getRequestUrl()));
         return;
     }
 
