@@ -4,7 +4,11 @@ namespace Langyi\Performance\Drivers;
 
 abstract class AbstractDriver implements Driver
 {
-    
+    /**
+     * 保存数据
+     * 
+     * @param array $xhprof_data
+     */
     abstract public function save(array $xhprof_data = []): void;
     /**
      * Return request URI
@@ -34,12 +38,22 @@ abstract class AbstractDriver implements Driver
         return "{$scheme}://{$host}{$port}{$uri}";
     }
     
-    public function getUid()
+    /**
+     * 生成固定前缀的随机数
+     * 
+     * @return string
+     */
+    public function getUid(): string
     {
-        return uniqid();
+        return str_replace('.', '', uniqid('p_', true));
     }
     
-    public function getDatabaseQueries()
+    /**
+     * JSONSQL
+     * 
+     * @return string
+     */
+    public function getDatabaseQueries(): string
     {
         return @json_encode(app('performance.eloquent')->getDatabaseQueries(),  \JSON_PARTIAL_OUTPUT_ON_ERROR);
     }

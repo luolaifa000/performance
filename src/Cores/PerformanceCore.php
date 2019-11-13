@@ -1,6 +1,9 @@
 <?php
 namespace Langyi\Performance\Cores;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Config\Repository;
+
 /**
  * xhprof记录性能日志
  *
@@ -14,12 +17,15 @@ class PerformanceCore
     private $enable;
     
     private $app;
+    
+    private $config;
 
-    public function __construct($app)
+    public function __construct(Application $app, Repository $config)
     {
         $this->app = $app;
-        $this->hit = config('performance.hit');
-        $this->enable = config('performance.enable') && $this->isHit();
+        $this->config = $config;
+        $this->hit = $this->config->get('performance.hit');
+        $this->enable = $this->config->get('performance.enable') && $this->isHit();
     }
 
     /**

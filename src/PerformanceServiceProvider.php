@@ -21,7 +21,6 @@ class PerformanceServiceProvider extends ServiceProvider
         }
         
         if ($this->app->make('performance')->getEnable()) {
-            
             $this->app['performance.eloquent']->listenToEvents();
         }
         
@@ -32,10 +31,10 @@ class PerformanceServiceProvider extends ServiceProvider
     {
         
         $this->app->singleton('performance', function ($app) {
-            return new PerformanceCore($app);
+            return new PerformanceCore($app, $app['config']);
         });
         $this->app->singleton('performance.manager', function ($app) {
-            return new DriverManager($app);
+            return new DriverManager($app, $app['config']);
         });
 
         $this->loadMigrationsFrom($this->getMigrateFile());
@@ -52,7 +51,7 @@ class PerformanceServiceProvider extends ServiceProvider
 
     }
     
-    private function getMigrateFile()
+    private function getMigrateFile(): string
     {
         return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'src/Migrations';
     }

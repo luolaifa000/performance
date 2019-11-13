@@ -11,7 +11,7 @@ abstract class AbstractBaseModel extends Model
         parent::__construct($attributes);
     }
     
-    public static function getTableName()
+    public static function getTableName(): string
     {
         return Str::snake(Str::pluralStudly(class_basename(static::class)));
     }

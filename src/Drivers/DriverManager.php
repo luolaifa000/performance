@@ -3,18 +3,23 @@
 namespace Langyi\Performance\Drivers;
 
 use InvalidArgumentException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Config\Repository as RepositoryConfig;
 
 class DriverManager 
 {
 
-    protected $app;
+    private $app;
+    
+    private $config;
 
     protected $stores = [];
 
 
-    public function __construct($app)
+    public function __construct(Application $app, RepositoryConfig $config)
     {
         $this->app = $app;
+        $this->config = $config;
     }
 
     public function store($name = null)
@@ -48,24 +53,24 @@ class DriverManager
 
     protected function createSqlDriver()
     {
-        return $this->repository(new SqlStorage());
+        return $this->repository(new SqlStorage($this->app['events']));
     }
 
 
-    public function repository(Driver $store)
+    public function repository(Driver $store): Repository
     {
         return new Repository($store);
     }
 
 
-    public function getDefaultDriver()
+    public function getDefaultDriver(): string
     {
-        return $this->app['config']['performance.storage'];
+        return $this->config->get('performance.storage');
     }
 
     public function setDefaultDriver($name)
     {
-        $this->app['config']['performance.storage'] = $name;
+        $this->config->set('performance.storage', $name);
     }
 
 
