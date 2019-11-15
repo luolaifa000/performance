@@ -7,6 +7,8 @@ use Illuminate\Support\ServiceProvider;
 use Langyi\Performance\DataSource\EloquentDataSource;
 use Langyi\Performance\Drivers\DriverManager;
 use Langyi\Performance\Cores\PerformanceCore;
+use Illuminate\Console\Scheduling\Schedule;
+use Langyi\Performance\Commands\PerformanceCleanCommand;
 
 
 
@@ -23,6 +25,15 @@ class PerformanceServiceProvider extends ServiceProvider
         if ($this->app->make('performance')->getEnable()) {
             $this->app['performance.eloquent']->listenToEvents();
         }
+        
+        $this->app->booted(function() {
+            $this->app->make(Schedule::class)->command(PerformanceCleanCommand::class, [
+                '--expire' => $this->app->make('config')->get('performance.expire')
+            ])->daily()
+            ->withoutOverlapping();
+        });
+        
+        
         
     }
     
@@ -48,6 +59,9 @@ class PerformanceServiceProvider extends ServiceProvider
             return (new EloquentDataSource($app['db'], $app['events']))
             ->collectStackTraces(false);
         });
+        $this->commands([
+            PerformanceCleanCommand::class
+        ]);
 
     }
     

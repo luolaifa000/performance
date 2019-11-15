@@ -46,5 +46,11 @@ class SqlStorage extends AbstractDriver
         $this->event->dispatch(new PerformanceSavedEvent($main, $this->getRequestUrl()));
         return;
     }
+    
+    
+    public function clean(int $expire): void
+    {
+        (new PModel())->whereDate('created_at', '<', date('Y-m-d', time() - $expire * 86400))->delete();
+    }
 
 }

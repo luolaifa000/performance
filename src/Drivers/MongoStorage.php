@@ -1,7 +1,7 @@
 <?php
 namespace Langyi\Performance\Drivers;
 
-class FileStorage extends AbstractDriver
+class MongoStorage extends AbstractDriver
 {
     
     public function save(array $xhprof_data = []): void

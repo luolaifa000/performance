@@ -10,6 +10,15 @@ abstract class AbstractDriver implements Driver
      * @param array $xhprof_data
      */
     abstract public function save(array $xhprof_data = []): void;
+    
+    /**
+     * 清理数据
+     *
+     * @param int $expire
+     */
+    abstract public function clean(int $expire): void;
+    
+    
     /**
      * Return request URI
      */

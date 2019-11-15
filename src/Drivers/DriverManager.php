@@ -50,6 +50,16 @@ class DriverManager
     {
         return $this->repository(new FileStorage());
     }
+    
+    protected function createRedisDriver()
+    {
+        return $this->repository(new RedisStorage());
+    }
+    
+    protected function createMongoDriver()
+    {
+        return $this->repository(new MongoStorage());
+    }
 
     protected function createSqlDriver()
     {
